@@ -1,0 +1,32 @@
+service:
+  database:
+    username: root
+    password: root
+    name: r2dbc-example
+    host: localhost
+    driver: mysql
+    port: 3306
+
+spring:
+  r2dbc:
+    url: r2dbc:${service.database.driver}://${service.database.host}:${service.database.port}/${service.database.name}
+    username: ${service.database.username}
+    password: ${service.database.password}
+    name: ${service.database.name}
+    pool:
+      initial-size: 10
+      max-size: 30
+      max-idle-time: 15s
+      validation-query: SELECT 1
+    properties:
+      connect-timeout: 10
+      ssl: false
+      max-create-connection-time: 3
+      max-acquire-time: 5
+      max-life-time: 15
+  flyway:
+    url: jdbc:${service.database.driver}://${service.database.host}:${service.database.port}/${service.database.name}
+    user: ${service.database.username}
+    password: ${service.database.password}
+    baseline-on-migrate: true
+    validate-on-migrate: true
